@@ -1,0 +1,211 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Olivia Demo</title>
+  <style>
+    body, html {
+      margin: 0; padding: 0;
+      font-family: sans-serif;
+      background-color: #111;
+      color: white;
+      height: 100%;
+      overflow: hidden;
+    }
+    #desktop {
+      width: 100vw; height: 100vh;
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      flex-wrap: wrap;
+      background-image: url('https://i.imgur.com/VtBrCXp.jpg');
+      background-size: cover;
+    }
+    .icon {
+      width: 80px; height: 80px;
+      background-color: #222;
+      border-radius: 15px;
+      text-align: center;
+      font-size: 12px;
+      padding: 5px;
+      box-shadow: 0 0 5px black;
+      cursor: pointer;
+    }
+    .icon img {
+      width: 48px;
+      height: 48px;
+    }
+    #speedyBrowser, #metalLauncher, #oliviaApp {
+      position: absolute;
+      top: 60px; left: 60px;
+      width: 500px;
+      height: 300px;
+      background-color: #222;
+      border-radius: 12px;
+      padding: 20px;
+      display: none;
+      box-shadow: 0 0 15px #0ff;
+    }
+    #oliviaApp {
+      box-shadow: 0 0 15px #f33;
+    }
+    #oliviaAdPopup {
+      position: fixed;
+      top: 30%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #111;
+      border: 3px solid #f33;
+      border-radius: 20px;
+      padding: 30px;
+      width: 350px;
+      z-index: 1000;
+      color: #f33;
+      font-size: 18px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+    #oliviaAdPopup button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+    #oliviaAdPopup .yes { background: #0a0; color: #fff; }
+    #oliviaAdPopup .no { background: #a00; color: #fff; }
+    input {
+      padding: 8px;
+      width: 100%;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    #webView {
+      margin-top: 10px;
+      height: 200px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+<div id="desktop">
+  <div class="icon" id="speedyIcon">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Footprint_icon.svg/64px-Footprint_icon.svg.png" />
+    <div>Speedy</div>
+  </div>
+  <div class="icon" id="metalIcon">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Gold_medal_icon.svg/64px-Gold_medal_icon.svg.png" />
+    <div>Metal Game</div>
+  </div>
+  <div class="icon" id="oliviaIcon">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Emoji_u1f47b.svg" />
+    <div>Olivia</div>
+  </div>
+</div>
+
+<div id="speedyBrowser">
+  <h2>Speedy Browser</h2>
+  <input id="searchBox" placeholder="Search Champion OS..." />
+  <div id="webView">Start searching!</div>
+</div>
+
+<div id="metalLauncher">
+  <h2>Metal Game Launcher</h2>
+  <p>Apps:</p>
+  <ul>
+    <li>OS Maker</li>
+  </ul>
+</div>
+
+<div id="oliviaApp">
+  <h2>Olivia App</h2>
+  <p>Hi, I'm Olivia! I love my uncle Curtis!</p>
+</div>
+
+<div id="oliviaAdPopup">
+  <p>Do you want to install Olivia?</p>
+  <div>
+    <button class="yes">Yes</button>
+    <button class="no">No</button>
+  </div>
+</div>
+
+<script>
+  const speedyIcon = document.getElementById('speedyIcon');
+  const metalIcon = document.getElementById('metalIcon');
+  const oliviaIcon = document.getElementById('oliviaIcon');
+
+  const speedyBrowser = document.getElementById('speedyBrowser');
+  const metalLauncher = document.getElementById('metalLauncher');
+  const oliviaApp = document.getElementById('oliviaApp');
+  const oliviaAdPopup = document.getElementById('oliviaAdPopup');
+
+  const yesBtn = document.querySelector('.yes');
+  const noBtn = document.querySelector('.no');
+
+  const searchBox = document.getElementById('searchBox');
+  const webView = document.getElementById('webView');
+
+  let searchCount = 0;
+  let oliviaInstalled = false;
+
+  speedyIcon.onclick = () => {
+    speedyBrowser.style.display = 'block';
+    metalLauncher.style.display = 'none';
+    oliviaApp.style.display = 'none';
+  };
+
+  metalIcon.onclick = () => {
+    speedyBrowser.style.display = 'none';
+    metalLauncher.style.display = 'block';
+    oliviaApp.style.display = 'none';
+  };
+
+  oliviaIcon.onclick = () => {
+    if (oliviaInstalled) {
+      oliviaApp.style.display = 'block';
+      speedyBrowser.style.display = 'none';
+      metalLauncher.style.display = 'none';
+    } else {
+      oliviaAdPopup.style.display = 'flex';
+    }
+  };
+
+  yesBtn.onclick = () => {
+    oliviaInstalled = true;
+    oliviaAdPopup.style.display = 'none';
+    oliviaApp.style.display = 'block';
+  };
+
+  noBtn.onclick = () => {
+    oliviaAdPopup.style.display = 'none';
+    alert("Olivia is installing anyway...");
+    oliviaInstalled = true;
+    setTimeout(() => {
+      oliviaApp.style.display = 'block';
+    }, 1000);
+  };
+
+  searchBox.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const val = searchBox.value;
+      searchCount++;
+      webView.innerHTML += `<p>You searched for: <strong>${val}</strong></p>`;
+      if (searchCount >= 5) {
+        alert("Warning: Olivia is watching you...");
+      }
+      searchBox.value = '';
+    }
+  });
+</script>
+
+</body>
+</html>
